@@ -1,6 +1,7 @@
 // app.js
 require('dotenv').config();
 const express = require('express');
+const sequelize = require('./config/database');
 // const bodyParser = require('body-parser');
 const { register, login } = require('./controllers/userController');
 const { createPost, getPostById } = require('./controllers/postController');
@@ -12,6 +13,12 @@ const app = express();
 app.use(express.json());
 const cors = require('cors');
 app.use(cors());
+
+
+sequelize.authenticate()
+  .then(() => console.log('Database connection has been established successfully.'))
+  .catch(err => console.error('Unable to connect to the database:', err));
+
 
 app.get('/posts/:postId/likes', getLikes);
 app.get('/posts/:id', getPostById);
@@ -26,30 +33,6 @@ app.post('/comments', auth, createComment);
 app.put('/comments', auth, updateComment);
 app.delete('/comments', auth, deleteComment);
 
-app.get('/posts/:id', async (req, res) => {
-  try {
-    // Test with a hardcoded ID, e.g., 1
-    const post = await Post.findByPk(1);
-    if (post) {
-      res.json(post);
-    } else {
-      res.status(404).send('Post not found');
-    }
-  } catch (error) {
-    console.error('Error fetching the post:', error.message);
-    res.status(500).send('Server error');
-  }
-});
-
-// Sample route to get comments for a post by ID
-app.get('/posts/:id/comments', async (req, res) => {
-  try {
-    const comments = await Comment.findAll({ where: { postId: req.params.id } });
-    res.json(comments);
-  } catch (error) {
-    res.status(500).send('Server error');
-  }
-});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
