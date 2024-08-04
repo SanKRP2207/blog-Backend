@@ -54,38 +54,16 @@ const unlikePost = async (req, res) => {
   }
 };
 
-// New method to get likes for a specific post
-// const getLikesForPost = async (req, res) => {
-//   const { postId } = req.params;
-
-//   try {
-//     // Check if the post exists
-//     const post = await Post.findByPk(postId);
-//     if (!post) {
-//       return res.status(404).json({ error: 'Post not found' });
-//     }
-
-//     // Fetch likes for the post
-//     const likes = await Like.findAll({
-//       where: { postId },
-//       attributes: ['userId'], // Adjust this if you want to return more information
-//     });
-
-//     res.status(200).json(likes);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
 
 const getLikes = async (req, res) => {
   try {
     const postId = req.params.postId;
     // Fetch the number of likes for the post
-    const likeCount = await Like.count({ where: { postId } });
+    const likeCount = await Like.count({ where:{ postId: postId } });
     
     // Check if the user has liked the post
     const hasLiked = await Like.findOne({
-      where: { userId: req.userId, postId }
+      where: { userId: req.params , postId: postId } 
     });
     
     res.json({
@@ -96,5 +74,6 @@ const getLikes = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
 
 module.exports = { likePost, unlikePost, getLikes };

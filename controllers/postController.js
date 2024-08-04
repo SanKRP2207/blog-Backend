@@ -34,4 +34,15 @@ const getPostById = async (req, res) => {
   }
 };
 
-module.exports = { createPost, getPostById};
+const getPosts = async (req, res) => {
+  try {
+    // Optional: Add filters, pagination, or sorting here
+    const posts = await Post.findAll(); // Retrieve all posts
+    res.status(200).json(posts);
+  } catch (err) {
+    console.error('Error fetching posts:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports = { createPost, getPostById, getPosts};
