@@ -1,14 +1,14 @@
-// app.js
+
 require('dotenv').config();
 const express = require('express');
-const sequelize = require('./config/database');
+const sequelize = require('../config/database');
 // const bodyParser = require('body-parser');
-const { register, login } = require('./controllers/userController');
-const { createPost, getPostById, getPosts } = require('./controllers/postController');
-const { likePost, unlikePost, getLikes } = require('./controllers/likeController');
-const { createComment, updateComment, deleteComment, getComments } = require('./controllers/commentController');
-const auth = require('./middleware/auth');
-const postRoutes = require('./models/GetPosts'); // Import your route
+const { register, login } = require('../controllers/userController');
+const { createPost, getPostById, getPosts } = require('../controllers/postController');
+const { likePost, unlikePost, getLikes } = require('../controllers/likeController');
+const { createComment, updateComment, deleteComment, getComments } = require('../controllers/commentController');
+const auth = require('../middleware/auth');
+const postRoutes = require('../models/GetPosts'); // Import your route
 const app = express();
 app.use(express.json());
 const cors = require('cors');
